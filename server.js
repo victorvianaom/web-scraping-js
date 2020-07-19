@@ -11,9 +11,12 @@ async function getQuestions() {
         //console.log(response)
         const cheerio = require('cheerio')
         const $ = cheerio.load(response.data)
-        element = $('body > table > tbody > tr > td:nth-child(1) > table > tbody > tr:nth-child(8) > td > table > tbody')
-        console.log(element['0'].children)
-        //return response
+        tbody3 = $('body > table > tbody > tr > td:nth-child(1) > table > tbody > tr:nth-child(8) > td > table > tbody')
+        tbody3['0'].children.each(function(index) {
+            if (index.name === "tr") {
+                console.log(index.children)//mostra somente as children de tr
+            }
+        })
     } catch (error) {
         console.error(error)
     }
