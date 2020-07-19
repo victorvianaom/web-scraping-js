@@ -11,7 +11,8 @@ async function getQuestions() {
         //console.log(response)
         const cheerio = require('cheerio')
         const $ = cheerio.load(response.data)
-        console.log($('body'))
+        element = $('body > table > tbody > tr > td:nth-child(1) > table > tbody > tr:nth-child(8) > td > table > tbody')
+        console.log(element['0'].children)
         //return response
     } catch (error) {
         console.error(error)
