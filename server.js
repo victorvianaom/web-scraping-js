@@ -12,11 +12,18 @@ async function getQuestions() {
         const cheerio = require('cheerio')
         const $ = cheerio.load(response.data)
         tbody3 = $('body > table > tbody > tr > td:nth-child(1) > table > tbody > tr:nth-child(8) > td > table > tbody')
-        tbody3['0'].children.each(function(index) {
-            if (index.name === "tr") {
-                console.log(index.children)//mostra somente as children de tr
+        tbody3Children = tbody3['0'].children
+        tbody3Children.forEach(function(item1, index1) {
+            if (item1.name === "tr" && index1 !== 0) { //capturando as 15 tr das questoes, eliminando o primeiro tr pq e inutil
+                trQuestion = tbody3Children[2]
+                trQuestion.children.forEach(function(item2, index2) { //capturando as 2 td de cada questao
+                    if (item2.name === "td") {
+                        console.log(item2.children)
+                    }
+                })
             }
         })
+        //console.log(tbody3['0'].children[2].children)//children da primeira tr que importa
     } catch (error) {
         console.error(error)
     }
@@ -28,9 +35,6 @@ getQuestions()
 // $('h2.title').text('Hello there!')
 // $('h2').addClass('welcome')
 // $.html()
-
-
-
 
 const server = http.createServer((req, res) => {
     res.statusCode = 200;
