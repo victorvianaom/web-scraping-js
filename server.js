@@ -13,12 +13,13 @@ async function getQuestions() {
         const $ = cheerio.load(response.data)
         tbody3 = $('body > table > tbody > tr > td:nth-child(1) > table > tbody > tr:nth-child(8) > td > table > tbody')
         tbody3Children = tbody3['0'].children
-        tbody3Children.forEach(function(item1, index1) {
-            if (item1.name === "tr" && index1 !== 0) { //capturando as 15 tr das questoes, eliminando o primeiro tr pq e inutil
-                trQuestion = tbody3Children[2]
-                trQuestion.children.forEach(function(item2, index2) { //capturando as 2 td de cada questao
-                    if (item2.name === "td") {
-                        console.log(item2.children)
+        tbody3Children.forEach(function(item1/**mudar o nome para trQuestion */, index1) {
+            if (item1.name === "tr" && index1/*change to !==0*/ === 2) { //capturando as 15 tr das questoes, eliminando o primeiro tr pq e inutil
+                trQuestionChildren = tbody3Children[2].children
+                trQuestionChildren.forEach(function(item2, index2) { //capturando as 2 td de cada questao
+                    if (item2.name === "td") { // cada questao tem 2 td
+                       // cada uma das tds tem que ser tratada de forma diferente... a primeira e a descricao e a segunda a questao em si
+                       console.log("td", index2 ,"children", item2.children)
                     }
                 })
             }
