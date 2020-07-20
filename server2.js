@@ -10,6 +10,31 @@ async function getQuestions() {
         )
         const cheerio = require('cheerio')
         const $ = cheerio.load(response.data)
+        
+        ROOT_SELECTOR = "body > table > tbody > tr > td:nth-child(1) > table > tbody > tr:nth-child(8) > td > table > tbody > "
+
+        for (var n = 1; n <= 15; n++) {
+            selectorQuestion = ROOT_SELECTOR + `tr:nth-child(${n + 1}) > `
+
+            vestibular = $(selectorQuestion + "td:nth-child(1) > font:nth-child(1) > a").text()
+            questaoDe = $(selectorQuestion + "td:nth-child(1) > font:nth-child(1)").text()
+            subGrupo = $(selectorQuestion + "td:nth-child(1) > font:nth-child(3)").text()
+            perguntaEResposta = $(selectorQuestion + "td:nth-child(2) > font > font").text()
+
+            /// filtering with regular expressions
+            //instituicao = 
+            ano = vestibular.match(/-(.*)/)[1]
+            questaoDe = questaoDe.match(/es de (.*)/)[1]
+            subGrupo = subGrupo.match(/sub-grupo:(.*)/)[1]
+
+            console.log("vestibular: " + vestibular)
+            //console.log("instituicao: " + instituicao)
+            console.log("ano: " + ano)
+            console.log("questao de: " + questaoDe)
+            console.log("sub grupo: " + subGrupo)
+            //console.log("pergunta e resposta: " + perguntaEResposta)
+            console.log("--------------------------")
+        }
 
     } catch (error) {
         console.error(error)
