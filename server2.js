@@ -6,7 +6,7 @@ const axios = require('axios')
 async function getQuestions() {
     try {
         const response = await axios.get(
-            'http://professor.bio.br/quimica/lista.all.asp?curpage=614'
+            'http://professor.bio.br/quimica/lista.all.asp?curpage=4'
         )
         const cheerio = require('cheerio')
         const $ = cheerio.load(response.data)
@@ -19,16 +19,24 @@ async function getQuestions() {
             vestibular = $(selectorQuestion + "td:nth-child(1) > font:nth-child(1) > a").text()
             questaoDe = $(selectorQuestion + "td:nth-child(1) > font:nth-child(1)").text()
             subGrupo = $(selectorQuestion + "td:nth-child(1) > font:nth-child(3)").text()
-            perguntaEResposta = $(selectorQuestion + "td:nth-child(2) > font > font").text()
+            enunciadoEResposta = $(selectorQuestion + "td:nth-child(2) > font").text()
 
             /// filtering with regular expressions
-            //questaoDe = questaoDe.match(/es de(.*)/)[1]
-            //subGrupo = subGrupo.match(/sub-grupo:(.*)/)[1]
+            classificada = questaoDe.match(/o classificada/) == null ? 1 : 0
+            questaoDe = questaoDe.match(/quest(.*)es de(.*)/)[2]
+            subGrupo = subGrupo.match(/sub-grupo:(.*)/)[1]
+            temSubGrupo = subGrupo.length == 0 ? 0 : 1
+            //enunciado = enunciadoEResposta.match(/pergunta:(.*)resposta:(.*)/)[1]
+            //resposta = enunciadoEResposta.match(/pergunta:(.*)resposta:(.*)/)[2]
 
+            console.log("classificada: " + classificada)
+            console.log("tem sub grupo: " + temSubGrupo)
             console.log("vestibular: " + vestibular)
             console.log("questao de: " + questaoDe)
             console.log("sub grupo: " + subGrupo)
-            //console.log("pergunta e resposta: " + perguntaEResposta)
+            //console.log("enunciado: " + enunciado)
+            //console.log("resposta: " + resposta)
+            console.log("enunciado e resposta: " + enunciadoEResposta)
             console.log("--------------------------")
         }
 
@@ -37,9 +45,6 @@ async function getQuestions() {
     }
 }
 getQuestions()
-
-
-
 
 const server = http.createServer((req, res) => {
     res.statusCode = 200;

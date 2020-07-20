@@ -1,0 +1,18 @@
+---------vestibular: body > table > tbody > tr > td:nth-child(1) > table > tbody > tr:nth-child(8) > td > table > tbody > tr:nth-child(2) > td:nth-child(1) > font:nth-child(1) > a
+		     body > table > tbody > tr > td:nth-child(1) > table > tbody > tr:nth-child(8) > td > table > tbody > tr:nth-child(2) > td:nth-child(1) > font:nth-child(1) > a
+                     body > table > tbody > tr > td:nth-child(1) > table > tbody > tr:nth-child(8) > td > table > tbody > tr:nth-child(2) > td:nth-child(1) > font:nth-child(1) > a
+                     				       bio: body > table > tbody > tr:nth-child(8) > td > table > tbody > tr:nth-child(2) > td:nth-child(1) > font:nth-child(1) > a
+						       bio: body > table > tbody > tr:nth-child(8) > td > table > tbody > tr:nth-child(2) > td:nth-child(1) > font:nth-child(1) > a
+---------questao de: body > table > tbody > tr > td:nth-child(1) > table > tbody > tr:nth-child(8) > td > table > tbody > tr:nth-child(2) > td:nth-child(1) > font:nth-child(1)
+----------sub-grupo: body > table > tbody > tr > td:nth-child(1) > table > tbody > tr:nth-child(8) > td > table > tbody > tr:nth-child(2) > td:nth-child(1) > font:nth-child(3)
+pergunta e resposta: body > table > tbody > tr > td:nth-child(1) > table > tbody > tr:nth-child(8) > td > table > tbody > tr:nth-child(2) > td:nth-child(2) > font > font
+________
+---------vestibular: body > table > tbody > tr > td:nth-child(1) > table > tbody > tr:nth-child(8) > td > table > tbody > tr:nth-child(3) > td:nth-child(1) > font:nth-child(1) > a
+---------questao de: body > table > tbody > tr > td:nth-child(1) > table > tbody > tr:nth-child(8) > td > table > tbody > tr:nth-child(3) > td:nth-child(1) > font:nth-child(1)
+----------sub-grupo: body > table > tbody > tr > td:nth-child(1) > table > tbody > tr:nth-child(8) > td > table > tbody > tr:nth-child(3) > td:nth-child(1) > font:nth-child(3)
+pergunta e resposta: body > table > tbody > tr > td:nth-child(1) > table > tbody > tr:nth-child(8) > td > table > tbody > tr:nth-child(3) > td:nth-child(2) > font > font
+________
+---------vestibular: body > table > tbody > tr > td:nth-child(1) > table > tbody > tr:nth-child(8) > td > table > tbody > tr:nth-child(15) > td:nth-child(1) > font:nth-child(1) > a
+---------questao de: body > table > tbody > tr > td:nth-child(1) > table > tbody > tr:nth-child(8) > td > table > tbody > tr:nth-child(15) > td:nth-child(1) > font:nth-child(1)
+----------sub-grupo: body > table > tbody > tr > td:nth-child(1) > table > tbody > tr:nth-child(8) > td > table > tbody > tr:nth-child(15) > td:nth-child(1) > font:nth-child(3)
+pergunta e resposta: body > table > tbody > tr > td:nth-child(1) > table > tbody > tr:nth-child(8) > td > table > tbody > tr:nth-child(15) > td:nth-child(2) > font > font
