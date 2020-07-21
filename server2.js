@@ -54,10 +54,10 @@ const Quimica = sequelize.define('quimica', {
 
 // this way of working with axios is the recomended, because the promise way is still in level three of formal acceptance
 const axios = require('axios')
-const { get } = require("request")
+//const { get } = require("request")
 async function getQuestions() {
     var errorArray = []
-    for (var i = 1; i <= 20; i++) {
+    for (var i = 41; i <= 60; i++) {
         url = `http://professor.bio.br/quimica/lista.all.asp?curpage=${i}`
         try {
             const response = await axios.request( /// changed from `get` to `request`
@@ -126,9 +126,8 @@ async function getQuestions() {
                 //console.log('peguei: ', i)
             }
         } catch (error) {
-
             Quimica.create({
-                id: id,
+                id: 1000000*i,
                 vestibular: `erro: ${error.response.status}, ${error.response.statusText}`,
                 questaoDe: `erro: ${error.response.status}, ${error.response.statusText}`,
                 subGrupo: `erro: ${error.response.status}, ${error.response.statusText}`,
@@ -147,7 +146,6 @@ async function getQuestions() {
     console.log("- erro nas paginas:", errorArray)
 }
 getQuestions()
-
 
 
 
