@@ -31,8 +31,8 @@ const Quimica = sequelize.define('quimica', {
     resposta: {
         type: Sequelize.TEXT
     },
-    img: {
-        type: Sequelize.STRING
+    images: {
+        type: Sequelize.TEXT
     },
     classificada: {
         type: Sequelize.INTEGER
@@ -40,7 +40,24 @@ const Quimica = sequelize.define('quimica', {
     temSubGrupo: {
         type: Sequelize.INTEGER
     },
+},
+{
+    freezeTableName: true // Model tableName will be the same as the model name
 })
 
 ////syncronize o meu sequilize model com o MySQL
 Quimica.sync({force: true}) // force: true will drop the table if it already exists
+
+const Postagens = sequelize.define('postagens', {
+    titulo: {
+        type: Sequelize.STRING
+    },
+    texto: {
+        type: Sequelize.TEXT
+    }
+}, {freezeTableName: true})
+Postagens.sync()
+Postagens.create({
+    titulo: "Hoje em dia",
+    texto: "num sei que de num sei que la, paranaue parana, tupanagua tipamigueta, guaratingueta"
+})
