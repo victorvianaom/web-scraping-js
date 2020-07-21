@@ -31,8 +31,11 @@ const Quimica = sequelize.define('quimica', {
     resposta: {
         type: Sequelize.TEXT
     },
-    images: {
+    imagens: {
         type: Sequelize.TEXT
+    },
+    nImagens: {
+        type: Sequelize.INTEGER
     },
     classificada: {
         type: Sequelize.INTEGER

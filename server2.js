@@ -1,5 +1,5 @@
-const http = require('http')
-const PORT = 3000
+// const http = require('http')
+// const PORT = 3000
 
 /// DB
 const Sequelize = require("sequelize")
@@ -35,8 +35,11 @@ const Quimica = sequelize.define('quimica', {
     resposta: {
         type: Sequelize.TEXT
     },
-    images: {
+    imagens: {
         type: Sequelize.TEXT
+    },
+    nImagens: {
+        type: Sequelize.INTEGER
     },
     classificada: {
         type: Sequelize.INTEGER
@@ -50,30 +53,38 @@ const Quimica = sequelize.define('quimica', {
 })
 
 // this way of working with axios is the recomended, because the promise way is still in level three of formal acceptance
-const axios = require('axios')    
+const axios = require('axios')
+const { get } = require("request")
 async function getQuestions() {
     var errorArray = []
     for (var i = 611; i <= 611; i++) {
+        url = "http://professor.bio.br/quimica/lista.all.asp?curpage="+i.toString()
         try {
-            const response = await axios.get(
-                `http://professor.bio.br/quimica/lista.all.asp?curpage=`+i.toString()
-            )
+            const response = await axios.request( /// changed from `get` to `request`
+                ////`http://professor.bio.br/quimica/lista.all.asp?curpage=${i}`
+            {
+                method: "GET",
+                url: url,
+                responseType:'arraybuffer',
+                responseEncoding:'binary',
+            })
             const cheerio = require('cheerio')
-            const $ = cheerio.load(response.data)
+            const $ = cheerio.load(response.data.toString('latin1'))
             
             ROOT_SELECTOR_QUIMICA = "body > table > tbody > tr > td:nth-child(1) > table > tbody > tr:nth-child(8) > td > table > tbody > "
 
             for (var n = 1; n <= 15; n++) {
                 selectorQuestion = ROOT_SELECTOR_QUIMICA + `tr:nth-child(${n + 1}) > `
 
-                id = 100000 + ( 15*(i-1) + n )
+                id = 1000000*i + ( 15*(i-1) + n )
                 vestibular = $(selectorQuestion + "td:nth-child(1) > font:nth-child(1) > a").text()
                 questaoDe = $(selectorQuestion + "td:nth-child(1) > font:nth-child(1)").text()
                 subGrupo = $(selectorQuestion + "td:nth-child(1) > font:nth-child(3)").text()
                 enunciadoEResposta = $(selectorQuestion + "td:nth-child(2) > font").text()
-                images = $(selectorQuestion + "td:nth-child(2) > font > font").children('img').map(function(){
+                imagens = $(selectorQuestion + "td:nth-child(2) > font > font").children('img').map(function(){
                     return $(this).attr('src')
-                }).get().toString()
+                }).get()
+                imagensJSON = JSON.stringify(imagens)
 
                 /// filtering with regular expressions
                 classificada = questaoDe.match(/o classificada/) == null ? 1 : 0
@@ -82,31 +93,32 @@ async function getQuestions() {
                 temSubGrupo = subGrupo.length == 0 ? 0 : 1
                 enunciado = enunciadoEResposta.substring(9+enunciadoEResposta.indexOf("pergunta:"),enunciadoEResposta.lastIndexOf("resposta:")).trim()
                 resposta = enunciadoEResposta.substring(enunciadoEResposta.lastIndexOf("resposta:")+9).trim()
+                nImagens = imagens.length
                 
-                // console.log("id: ", id)
-                // console.log("vestibular: ", vestibular)
-                // console.log("questao de: ", questaoDe)
-                // console.log("sub grupo: ", subGrupo)
-                // console.log("enunciado: ", enunciado)
-                // console.log("resposta: ", resposta)
-                // console.log("images: ", images)
-                // console.log("classificada: ", classificada)
-                // console.log("tem sub grupo: ", temSubGrupo)
+                console.log("id: ", id)
+                console.log("vestibular: ", vestibular)
+                console.log("questao de: ", questaoDe)
+                console.log("sub grupo: ", subGrupo)
+                console.log("enunciado: ", enunciado)
+                console.log("resposta: ", resposta)
+                console.log("imagens: ", imagensJSON)
+                console.log("tem imagem?: ", nImagens)
+                console.log("classificada?: ", classificada)
+                console.log("tem sub grupo?: ", temSubGrupo)
 
                 ///---Criando uma nova linha no banco `questoes` na tabela `quimica`
-                Quimica.create({
-                    id: id,
-                    vestibular: vestibular,
-                    questaoDe: questaoDe,
-                    subGrupo: subGrupo,
-                    enunciado: enunciado,
-                    resposta: resposta,
-                    images: images,
-                    classificada: classificada,
-                    temSubGrupo: temSubGrupo 
-                })
-
-
+                // Quimica.create({
+                //     id: id,
+                //     vestibular: vestibular,
+                //     questaoDe: questaoDe,
+                //     subGrupo: subGrupo,
+                //     enunciado: enunciado,
+                //     resposta: resposta,
+                //     imagens: imagensJSON,
+                //     nImagens: nImagens,        
+                //     classificada: classificada,
+                //     temSubGrupo: temSubGrupo 
+                // })
 
 
                 // console.log("enunciado e resposta: " + enunciadoEResposta)
@@ -114,11 +126,12 @@ async function getQuestions() {
                 //console.log('peguei: ', i)
             }
         } catch (error) {
-            console.error("deu ruim: ", i)
+            console.log;("- deu ruim na pagina: ", i)
+            console.error("- especificando o erro: ", error)
             errorArray.push(i)
         }
     }
-    console.log("- errorArray:", errorArray)
+    console.log("- erro nas paginas:", errorArray)
 }
 getQuestions()
 
@@ -126,12 +139,12 @@ getQuestions()
 
 
 
-const server = http.createServer((req, res) => {
-    res.statusCode = 200;
-    res.setHeader('Content-Type', 'text/plain');
-    res.end('Hello World....................');
-  });
+// const server = http.createServer((req, res) => {
+//     res.statusCode = 200;
+//     res.setHeader('Content-Type', 'text/plain');
+//     res.end('Hello World....................');
+//   });
 
-server.listen(PORT, () => {
-  console.log(`Server running at PORT:${PORT}/`);
-});
+// server.listen(PORT, () => {
+//   console.log(`Server running at PORT:${PORT}/`);
+// });
