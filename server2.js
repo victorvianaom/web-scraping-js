@@ -9,7 +9,7 @@ const sequelize = new Sequelize('questoes', 'root', 'MyDB#627#363', {
 }) //banco, usuario, senha, objeto-json
 
 sequelize.authenticate().then(function() {
-    console.log("Deu pa conectar, irruuu")
+    console.log("Deu pa conectar com o banco de dados, irruuu")
 }).catch(function(error) {
     console.log("Deu pa conectar nao:", error)
 })
@@ -57,8 +57,8 @@ const axios = require('axios')
 const { get } = require("request")
 async function getQuestions() {
     var errorArray = []
-    for (var i = 611; i <= 611; i++) {
-        url = "http://professor.bio.br/quimica/lista.all.asp?curpage="+i.toString()
+    for (var i = 1; i <= 20; i++) {
+        url = `http://professor.bio.br/quimica/lista.all.asp?curpage=${i}`
         try {
             const response = await axios.request( /// changed from `get` to `request`
                 ////`http://professor.bio.br/quimica/lista.all.asp?curpage=${i}`
@@ -84,7 +84,6 @@ async function getQuestions() {
                 imagens = $(selectorQuestion + "td:nth-child(2) > font > font").children('img').map(function(){
                     return $(this).attr('src')
                 }).get()
-                imagensJSON = JSON.stringify(imagens)
 
                 /// filtering with regular expressions
                 classificada = questaoDe.match(/o classificada/) == null ? 1 : 0
@@ -94,31 +93,32 @@ async function getQuestions() {
                 enunciado = enunciadoEResposta.substring(9+enunciadoEResposta.indexOf("pergunta:"),enunciadoEResposta.lastIndexOf("resposta:")).trim()
                 resposta = enunciadoEResposta.substring(enunciadoEResposta.lastIndexOf("resposta:")+9).trim()
                 nImagens = imagens.length
+                imagensJSON = nImagens === 0 ? "" : JSON.stringify(imagens)
                 
-                console.log("id: ", id)
-                console.log("vestibular: ", vestibular)
-                console.log("questao de: ", questaoDe)
-                console.log("sub grupo: ", subGrupo)
-                console.log("enunciado: ", enunciado)
-                console.log("resposta: ", resposta)
-                console.log("imagens: ", imagensJSON)
-                console.log("tem imagem?: ", nImagens)
-                console.log("classificada?: ", classificada)
-                console.log("tem sub grupo?: ", temSubGrupo)
+                // console.log("id: ", id)
+                // console.log("vestibular: ", vestibular)
+                // console.log("questao de: ", questaoDe)
+                // console.log("sub grupo: ", subGrupo)
+                // console.log("enunciado: ", enunciado)
+                // console.log("resposta: ", resposta)
+                // console.log("imagens: ", imagensJSON)
+                // console.log("tem imagem?: ", nImagens)
+                // console.log("classificada?: ", classificada)
+                // console.log("tem sub grupo?: ", temSubGrupo)
 
                 ///---Criando uma nova linha no banco `questoes` na tabela `quimica`
-                // Quimica.create({
-                //     id: id,
-                //     vestibular: vestibular,
-                //     questaoDe: questaoDe,
-                //     subGrupo: subGrupo,
-                //     enunciado: enunciado,
-                //     resposta: resposta,
-                //     imagens: imagensJSON,
-                //     nImagens: nImagens,        
-                //     classificada: classificada,
-                //     temSubGrupo: temSubGrupo 
-                // })
+                Quimica.create({
+                    id: id,
+                    vestibular: vestibular,
+                    questaoDe: questaoDe,
+                    subGrupo: subGrupo,
+                    enunciado: enunciado,
+                    resposta: resposta,
+                    imagens: imagensJSON,
+                    nImagens: nImagens,        
+                    classificada: classificada,
+                    temSubGrupo: temSubGrupo 
+                })
 
 
                 // console.log("enunciado e resposta: " + enunciadoEResposta)
@@ -126,8 +126,21 @@ async function getQuestions() {
                 //console.log('peguei: ', i)
             }
         } catch (error) {
-            console.log;("- deu ruim na pagina: ", i)
-            console.error("- especificando o erro: ", error)
+
+            Quimica.create({
+                id: id,
+                vestibular: `erro: ${error.response.status}, ${error.response.statusText}`,
+                questaoDe: `erro: ${error.response.status}, ${error.response.statusText}`,
+                subGrupo: `erro: ${error.response.status}, ${error.response.statusText}`,
+                enunciado: `erro: ${error.response.status}, ${error.response.statusText}`,
+                resposta: `erro: ${error.response.status}, ${error.response.statusText}`,
+                imagens: `erro: ${error.response.status}, ${error.response.statusText}`,
+                nImagens: 0,        
+                classificada: 0,
+                temSubGrupo: 0 
+            })
+
+            console.error("- deu erro na pagina: ", i, " | erro: ", error.response.status, error.response.statusText)
             errorArray.push(i)
         }
     }
