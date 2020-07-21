@@ -12,12 +12,35 @@ sequelize.authenticate().then(function() {
 
 // creating models, each model corresponds to a table...
 const Quimica = sequelize.define('quimica', {
-    id: ,
-    vestibular: ,
-    questaoDe: ,
-    subGrupo: ,
-    enunciado: ,
-    resposta: ,
-    classificada: ,
-    temSubGrupo: ,
+    id: {
+        type: Sequelize.INTEGER,
+        primaryKey: true,
+    },
+    vestibular: {
+        type: Sequelize.STRING
+    },
+    questaoDe: {
+        type: Sequelize.STRING
+    },
+    subGrupo: {
+        type: Sequelize.STRING
+    },
+    enunciado: {
+        type: Sequelize.TEXT
+    },
+    resposta: {
+        type: Sequelize.TEXT
+    },
+    img: {
+        type: Sequelize.STRING
+    },
+    classificada: {
+        type: Sequelize.INTEGER
+    },
+    temSubGrupo: {
+        type: Sequelize.INTEGER
+    },
 })
+
+////syncronize o meu sequilize model com o MySQL
+Quimica.sync({force: true}) // force: true will drop the table if it already exists
