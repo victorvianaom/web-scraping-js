@@ -18,6 +18,7 @@ async function getQuestions() {
             for (var n = 1; n <= 15; n++) {
                 selectorQuestion = ROOT_SELECTOR_QUIMICA + `tr:nth-child(${n + 1}) > `
 
+                id = 100000 + ( 15*(i-1) + n ) 
                 vestibular = $(selectorQuestion + "td:nth-child(1) > font:nth-child(1) > a").text()
                 questaoDe = $(selectorQuestion + "td:nth-child(1) > font:nth-child(1)").text()
                 subGrupo = $(selectorQuestion + "td:nth-child(1) > font:nth-child(3)").text()

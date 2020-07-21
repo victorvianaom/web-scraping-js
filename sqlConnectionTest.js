@@ -9,3 +9,15 @@ sequelize.authenticate().then(function() {
 }).catch(function(error) {
     console.log("Deu pa conectar nao:", error)
 })
+
+// creating models, each model corresponds to a table...
+const Quimica = sequelize.define('quimica', {
+    id: ,
+    vestibular: ,
+    questaoDe: ,
+    subGrupo: ,
+    enunciado: ,
+    resposta: ,
+    classificada: ,
+    temSubGrupo: ,
+})
