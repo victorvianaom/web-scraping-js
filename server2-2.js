@@ -4,16 +4,16 @@
 const axios = require('axios');    
 const { url } = require('inspector');
 const { ok } = require('assert');
-corrige = (enunciado,resposta,vestibular)=>{
+corrige = (enunciado,resposta,vestibular,assunto,subassunto,temSubassunto,classificada)=>{
     // [A] || Alternativa C.|| (A) resposta...||A.|| A 
-    let isAlternativa = true; //
-    let enunciadoCorrigido; //
-    let respostaCorrigida; //
-    let vestibularCorrigido; //
-    let a,b,c,d,e; //
-    let aIndex,bIndex,cIndex,dIndex, eIndex; //
-    let AIndex,BIndex,CIndex,DIndex,EIndex; //
-    let hifenIndex; //
+    let isAlternativa = true;
+    let enunciadoCorrigido;
+    let respostaCorrigida;
+    let vestibularCorrigido;
+    let a,b,c,d,e;
+    let aIndex,bIndex,cIndex,dIndex, eIndex;
+    let AIndex,BIndex,CIndex,DIndex,EIndex;
+    let hifenIndex;
     let tipo;
     hifenIndex = vestibular.lastIndexOf('-');
     if(hifenIndex!=-1){
@@ -80,6 +80,8 @@ corrige = (enunciado,resposta,vestibular)=>{
                 enunciadoCorrigido = enunciado;
                 respostaCorrigida = resposta;
             }
+        console.log('assunto:'+assunto);
+        console.log('subassunto:'+subassunto);
         console.log('ano:' + ano);
         console.log('vestibular:'+vestibularCorrigido);
         console.log('q:' + enunciadoCorrigido)
@@ -90,16 +92,18 @@ corrige = (enunciado,resposta,vestibular)=>{
         console.log('e:' + e);
         console.log('r:' + respostaCorrigida);
         tipo = 'alternativa';
-        //TODO criar lista aqui; Aqui a questão é alternativa
+        //TODO criar lista aqui; Aqui a questão é alternativa não esquecer temSubassunto,classificada
 
     }
     else{
+        console.log('assunto:'+assunto);
+        console.log('subassunto:'+subassunto);
         console.log('ano:' + ano);
         console.log('vestibular:'+vestibularCorrigido);
         console.log('q:' + enunciadoCorrigido) 
         console.log('r:' + respostaCorrigida)
         tipo='dissertativa';
-        // TODO aqui a questão não se enquadrou na captura de alternativa
+        // TODO aqui a questão não se enquadrou na captura de alternativa Não esquecer temSubassunto,classificada
     }
         
 }
@@ -107,7 +111,7 @@ async function getQuestions() {
     try {
         const response = await axios.request({
             method:'GET',
-            url: 'http://professor.bio.br/quimica/lista.all.asp?curpage=61',
+            url: 'http://professor.bio.br/quimica/lista.all.asp?curpage=611',
             responseType:'arraybuffer',
             responseEncoding:'binary'
         }
@@ -118,18 +122,18 @@ async function getQuestions() {
         for (var n = 1; n <= 15; n++) {
             selectorQuestion = ROOT_SELECTOR_QUIMICA + `tr:nth-child(${n + 1}) > `
             vestibular = $(selectorQuestion + "td:nth-child(1) > font:nth-child(1) > a").text()
-            questaoDe = $(selectorQuestion + "td:nth-child(1) > font:nth-child(1)").text()
-            subGrupo = $(selectorQuestion + "td:nth-child(1) > font:nth-child(3)").text()
+            assunto = $(selectorQuestion + "td:nth-child(1) > font:nth-child(1)").text()
+            subassunto = $(selectorQuestion + "td:nth-child(1) > font:nth-child(3)").text()
             enunciadoEResposta = $(selectorQuestion + "td:nth-child(2) > font").text()
             /// filtering with regular expressions
-            classificada = questaoDe.match(/o classificada/) == null ? 1 : 0
-            questaoDe = (questaoDe.match(/quest(.*)es de(.*)/)[2]).trim();
-            subGrupo = (subGrupo.match(/sub-grupo:(.*)/)[1]).trim();
-            temSubGrupo = subGrupo.length == 0 ? 0 : 1
+            classificada = assunto.match(/o classificada/) == null ? 1 : 0
+            assunto = (assunto.match(/quest(.*)es de(.*)/)[2]).trim();
+            subassunto = (subassunto.match(/sub-grupo:(.*)/)[1]).trim();
+            temSubassunto = subassunto.length == 0 ? 0 : 1
             enunciado =enunciadoEResposta.substring(9+enunciadoEResposta.indexOf("pergunta"),enunciadoEResposta.lastIndexOf("resposta")).trim();
             resposta = enunciadoEResposta.substring(enunciadoEResposta.lastIndexOf("resposta")+9).trim();
             //resposta = enunciadoEResposta.match(/pergunta:(.*)resposta:(.*)/)[2]enunciadoEResposta.substring(9+enunciadoEResposta.indexOf("pergunta"),enunciadoEResposta.lastIndexOf("resposta")).trim()
-            corrige(enunciado,resposta,vestibular);
+            corrige(enunciado,resposta,vestibular,assunto,subassunto,classificada,classificada);
             //console.log("enunciado e resposta: " + enunciadoEResposta)
             console.log("--------------------------")
         }
