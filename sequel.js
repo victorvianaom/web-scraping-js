@@ -16,6 +16,12 @@ const Quimica = sequelize.define('quimica', {
         type: Sequelize.INTEGER,
         primaryKey: true,
     },
+    ano: {
+        type: Sequelize.INTEGER
+    },
+    tipo: {
+        type: Sequelize.STRING
+    },
     vestibular: {
         type: Sequelize.STRING
     },
@@ -49,4 +55,4 @@ const Quimica = sequelize.define('quimica', {
 })
 
 ////syncronize o meu sequilize model com o MySQL
-Quimica.sync({force: true}) // force: true will drop the table if it already exists
+///////////Quimica.sync({/*force: true*/}) // force: true will drop the table if it already exists
