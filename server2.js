@@ -20,16 +20,28 @@ const Quimica = sequelize.define('quimica', {
         type: Sequelize.INTEGER,
         primaryKey: true,
     },
+    ano: {
+        type: Sequelize.INTEGER
+    },
+    tipo: {
+        type: Sequelize.STRING
+    },
     vestibular: {
         type: Sequelize.STRING
     },
-    questaoDe: {
+    assunto: {
         type: Sequelize.STRING
     },
-    subGrupo: {
+    subAssunto: {
         type: Sequelize.STRING
     },
     enunciado: {
+        type: Sequelize.TEXT
+    },
+    enunciadoCorrigido: {
+        type: Sequelize.TEXT
+    },
+    alternativas: {
         type: Sequelize.TEXT
     },
     resposta: {
@@ -44,7 +56,7 @@ const Quimica = sequelize.define('quimica', {
     classificada: {
         type: Sequelize.INTEGER
     },
-    temSubGrupo: {
+    temSubAssunto: {
         type: Sequelize.INTEGER
     },
 },
@@ -52,12 +64,150 @@ const Quimica = sequelize.define('quimica', {
     freezeTableName: true // Model tableName will be the same as the model name
 })
 
+//////////////////////////////////////////////////////////////// MICHEL CORRIGE FUNCTION
+
+
+// corrige = (enunciado,resposta,vestibular,assunto,subAssunto)=>{
+//     // [A] || Alternativa C.|| (A) resposta...||A.|| A 
+//     let isAlternativa = true;
+//     let enunciadoCorrigido;
+//     let respostaCorrigida;
+//     let vestibularCorrigido;
+//     let a,b,c,d,e;
+//     let aIndex,bIndex,cIndex,dIndex, eIndex;
+//     let AIndex,BIndex,CIndex,DIndex,EIndex;
+//     let hifenIndex;
+//     let dimResposta
+//     let tipo;
+//     hifenIndex = vestibular.lastIndexOf('-');
+//     if(hifenIndex!=-1){
+//         vestibularCorrigido = vestibular.substring(0,hifenIndex);
+//         ano= vestibular.substring(1+hifenIndex);
+//     }
+//     else{
+//         vestibularCorrigido="";
+//         ano="";
+//     }
+    
+//     resposta = resposta.trim();
+//     dimResposta = resposta.length;
+//     if(dimResposta>=16){
+//         isAlternativa = false;
+//         respostaCorrigida = resposta;
+//         enunciadoCorrigido = enunciado;       
+//     }
+//     else if (resposta.match(/[[A]]/)||resposta.match(/Alternativa A./)||resposta.match(/A./)){
+//         respostaCorrigida = 'A';
+//     }
+//     else if(resposta.match(/[[B]]/)||resposta.match(/Alternativa B./)||resposta.match(/B./)){
+//         respostaCorrigida = 'B';
+//     }
+//     else if(resposta.match(/[[C]]/)||resposta.match(/Alternativa C./)||resposta.match(/C./)){
+//         respostaCorrigida = 'C';
+//     }
+//     else if(resposta.match(/[[D]]/)||resposta.match(/Alternativa D./)||resposta.match(/D./)){
+//         respostaCorrigida = 'D';
+//     }
+//     else if(resposta.match(/[[E]]/)||resposta.match(/Alternativa E./)||resposta.match(/E./)){
+//         respostaCorrigida = 'E';
+//     }
+//     else{
+//         isAlternativa = false;
+//         respostaCorrigida = resposta;
+//         enunciadoCorrigido = enunciado;
+//     }
+//     if(isAlternativa){
+
+            
+//             aIndex=enunciado.lastIndexOf("a)");
+//             bIndex=enunciado.lastIndexOf("b)");
+//             cIndex=enunciado.lastIndexOf("c)");
+//             dIndex=enunciado.lastIndexOf("d)");
+//             eIndex=enunciado.lastIndexOf("e)");
+//             AIndex = enunciado.lastIndexOf("(A)");
+//             BIndex = enunciado.lastIndexOf("(B)");
+//             CIndex = enunciado.lastIndexOf("(C)");
+//             DIndex = enunciado.lastIndexOf("(D)");
+//             EIndex = enunciado.lastIndexOf("(E)");
+//             if(aIndex!=-1&&bIndex!=-1&&cIndex!=-1&&dIndex!=-1&&eIndex!=-1&&(eIndex>dIndex&&dIndex>cIndex&&cIndex>bIndex&&bIndex>aIndex)){
+//                 enunciadoCorrigido = enunciado.substring(0,aIndex);
+//                 a=enunciado.substring(aIndex+2,bIndex).trim();
+//                 b=enunciado.substring(bIndex+2,cIndex).trim();
+//                 c=enunciado.substring(cIndex+2,dIndex).trim();
+//                 d=enunciado.substring(dIndex+2,eIndex).trim();
+//                 e=enunciado.substring(eIndex+2).trim();
+//             }
+//             else if(AIndex!=-1&&BIndex!=-1&&CIndex!=-1&&DIndex!=-1&&EIndex!=-1){
+//                 enunciadoCorrigido = enunciado.substring(0,AIndex);
+//                 a=enunciado.substring(AIndex+3,BIndex).trim();
+//                 b=enunciado.substring(BIndex+3,CIndex).trim();
+//                 c=enunciado.substring(CIndex+3,DIndex).trim();
+//                 d=enunciado.substring(DIndex+3,EIndex).trim();
+//                 e=enunciado.substring(EIndex+3).trim();
+//             }
+//             else{
+//                 enunciadoCorrigido = enunciado;
+//                 respostaCorrigida = resposta;
+//             }
+//         console.log('assunto:'+assunto);
+//         console.log('subAssunto:'+subAssunto);
+//         console.log('ano:' + ano);
+//         console.log('vestibular:'+vestibularCorrigido);
+//         console.log('q:' + enunciadoCorrigido)
+//         console.log('a:' + a);
+//         console.log('b:' + b);
+//         console.log('c:' + c);
+//         console.log('d:' + d);
+//         console.log('e:' + e);
+//         console.log('r:' + respostaCorrigida);
+//         tipo = 'alternativa';
+//         //TODO criar lista aqui; Aqui a questão é alternativa
+//         return {
+//             assunto:assunto,
+//             subAssunto: subAssunto,
+//             ano: ano,
+//             vestibular: vestibularCorrigido,
+//             enunciadoCorrigido: enunciadoCorrigido,
+//             resposta: respostaCorrigida,
+//             alternativas: JSON.stringify([a, b, c, d, e]),
+//             tipo: tipo
+//         }
+
+//     }
+//     else{
+//         console.log('assunto:'+assunto);
+//         console.log('subAssunto:'+subAssunto);
+//         console.log('ano:' + ano);
+//         console.log('vestibular:'+vestibularCorrigido);
+//         console.log('q:' + enunciadoCorrigido) 
+//         console.log('r:' + respostaCorrigida)
+//         tipo='dissertativa';
+//         // TODO aqui a questão não se enquadrou na captura de alternativa
+//         return {
+//             assunto: assunto,
+//             subAssunto: subAssunto,
+//             ano: ano,
+//             vestibular: vestibularCorrigido,
+//             enunciadoCorrigido: enunciadoCorrigido,
+//             resposta: respostaCorrigida,
+//             alternativas: "",
+//             tipo: tipo
+//         }
+//     }
+        
+// }
+
+
+
+////////////////////////////////////////////////////////////////
+
+
 // this way of working with axios is the recomended, because the promise way is still in level three of formal acceptance
 const axios = require('axios')
 //const { get } = require("request")
 async function getQuestions() {
     var errorArray = []
-    for (var i = 41; i <= 60; i++) {
+    for (var i = 1; i <= 613; i++) {
         url = `http://professor.bio.br/quimica/lista.all.asp?curpage=${i}`
         try {
             const response = await axios.request( /// changed from `get` to `request`
@@ -78,18 +228,18 @@ async function getQuestions() {
 
                 id = 1000000*i + ( 15*(i-1) + n )
                 vestibular = $(selectorQuestion + "td:nth-child(1) > font:nth-child(1) > a").text()
-                questaoDe = $(selectorQuestion + "td:nth-child(1) > font:nth-child(1)").text()
-                subGrupo = $(selectorQuestion + "td:nth-child(1) > font:nth-child(3)").text()
+                assunto = $(selectorQuestion + "td:nth-child(1) > font:nth-child(1)").text()
+                subAssunto = $(selectorQuestion + "td:nth-child(1) > font:nth-child(3)").text()
                 enunciadoEResposta = $(selectorQuestion + "td:nth-child(2) > font").text()
                 imagens = $(selectorQuestion + "td:nth-child(2) > font > font").children('img').map(function(){
                     return $(this).attr('src')
                 }).get()
 
                 /// filtering with regular expressions
-                classificada = questaoDe.match(/o classificada/) == null ? 1 : 0
-                questaoDe = questaoDe.match(/quest(.*)es de(.*)/)[2]
-                subGrupo = subGrupo.match(/sub-grupo:(.*)/)[1]
-                temSubGrupo = subGrupo.length == 0 ? 0 : 1
+                classificada = assunto.match(/o classificada/) == null ? 1 : 0
+                assunto = assunto.match(/quest(.*)es de(.*)/)[2]
+                subAssunto = subAssunto.match(/sub-grupo:(.*)/)[1]
+                temSubAssunto = subAssunto.length == 0 ? 0 : 1
                 enunciado = enunciadoEResposta.substring(9+enunciadoEResposta.indexOf("pergunta:"),enunciadoEResposta.lastIndexOf("resposta:")).trim()
                 resposta = enunciadoEResposta.substring(enunciadoEResposta.lastIndexOf("resposta:")+9).trim()
                 nImagens = imagens.length
@@ -97,48 +247,179 @@ async function getQuestions() {
                 
                 // console.log("id: ", id)
                 // console.log("vestibular: ", vestibular)
-                // console.log("questao de: ", questaoDe)
-                // console.log("sub grupo: ", subGrupo)
+                // console.log("questao de: ", assunto)
+                // console.log("sub grupo: ", subAssunto)
                 // console.log("enunciado: ", enunciado)
                 // console.log("resposta: ", resposta)
                 // console.log("imagens: ", imagensJSON)
                 // console.log("tem imagem?: ", nImagens)
                 // console.log("classificada?: ", classificada)
-                // console.log("tem sub grupo?: ", temSubGrupo)
+                // console.log("tem sub grupo?: ", temSubAssunto)
+
+                //camposCorrigidos = corrige(enunciado,resposta,vestibular,assunto,subAssunto);
+
+
+                //////////////////////////////////////////////////////////////// MICHEL CORRIGE FUNCTION
+
+
+//corrige = (enunciado,resposta,vestibular,assunto,subAssunto)=>{
+    // [A] || Alternativa C.|| (A) resposta...||A.|| A 
+    let isAlternativa = true;
+    let enunciadoCorrigido;
+    let respostaCorrigida;
+    let vestibularCorrigido;
+    let a,b,c,d,e;
+    let aIndex,bIndex,cIndex,dIndex, eIndex;
+    let AIndex,BIndex,CIndex,DIndex,EIndex;
+    let hifenIndex;
+    let dimResposta
+    let tipo;
+    hifenIndex = vestibular.lastIndexOf('-');
+    if(hifenIndex!=-1){
+        vestibularCorrigido = vestibular.substring(0,hifenIndex);
+        ano= vestibular.substring(1+hifenIndex);
+    }
+    else{
+        vestibularCorrigido="";
+        ano="";
+    }
+    
+    resposta = resposta.trim();
+    dimResposta = resposta.length;
+    if(dimResposta>=16){
+        isAlternativa = false;
+        respostaCorrigida = resposta;
+        enunciadoCorrigido = enunciado;       
+    }
+    else if (resposta.match(/[[A]]/)||resposta.match(/Alternativa A./)||resposta.match(/A./)){
+        respostaCorrigida = 'A';
+    }
+    else if(resposta.match(/[[B]]/)||resposta.match(/Alternativa B./)||resposta.match(/B./)){
+        respostaCorrigida = 'B';
+    }
+    else if(resposta.match(/[[C]]/)||resposta.match(/Alternativa C./)||resposta.match(/C./)){
+        respostaCorrigida = 'C';
+    }
+    else if(resposta.match(/[[D]]/)||resposta.match(/Alternativa D./)||resposta.match(/D./)){
+        respostaCorrigida = 'D';
+    }
+    else if(resposta.match(/[[E]]/)||resposta.match(/Alternativa E./)||resposta.match(/E./)){
+        respostaCorrigida = 'E';
+    }
+    else{
+        isAlternativa = false;
+        respostaCorrigida = resposta;
+        enunciadoCorrigido = enunciado;
+    }
+    if(isAlternativa){
+
+            
+            aIndex=enunciado.lastIndexOf("a)");
+            bIndex=enunciado.lastIndexOf("b)");
+            cIndex=enunciado.lastIndexOf("c)");
+            dIndex=enunciado.lastIndexOf("d)");
+            eIndex=enunciado.lastIndexOf("e)");
+            AIndex = enunciado.lastIndexOf("(A)");
+            BIndex = enunciado.lastIndexOf("(B)");
+            CIndex = enunciado.lastIndexOf("(C)");
+            DIndex = enunciado.lastIndexOf("(D)");
+            EIndex = enunciado.lastIndexOf("(E)");
+            if(aIndex!=-1&&bIndex!=-1&&cIndex!=-1&&dIndex!=-1&&eIndex!=-1&&(eIndex>dIndex&&dIndex>cIndex&&cIndex>bIndex&&bIndex>aIndex)){
+                enunciadoCorrigido = enunciado.substring(0,aIndex);
+                a=enunciado.substring(aIndex+2,bIndex).trim();
+                b=enunciado.substring(bIndex+2,cIndex).trim();
+                c=enunciado.substring(cIndex+2,dIndex).trim();
+                d=enunciado.substring(dIndex+2,eIndex).trim();
+                e=enunciado.substring(eIndex+2).trim();
+            }
+            else if(AIndex!=-1&&BIndex!=-1&&CIndex!=-1&&DIndex!=-1&&EIndex!=-1){
+                enunciadoCorrigido = enunciado.substring(0,AIndex);
+                a=enunciado.substring(AIndex+3,BIndex).trim();
+                b=enunciado.substring(BIndex+3,CIndex).trim();
+                c=enunciado.substring(CIndex+3,DIndex).trim();
+                d=enunciado.substring(DIndex+3,EIndex).trim();
+                e=enunciado.substring(EIndex+3).trim();
+            }
+            else{
+                enunciadoCorrigido = enunciado;
+                respostaCorrigida = resposta;
+            }
+        // console.log('assunto:'+assunto);
+        // console.log('subAssunto:'+subAssunto);
+        // console.log('ano:' + ano);
+        // console.log('vestibular:'+vestibularCorrigido);
+        // console.log('q:' + enunciadoCorrigido)
+        // console.log('a:' + a);
+        // console.log('b:' + b);
+        // console.log('c:' + c);
+        // console.log('d:' + d);
+        // console.log('e:' + e);
+        // console.log('r:' + respostaCorrigida);
+        tipo = 'alternativa';
+
+        //TODO criar lista aqui; Aqui a questão é alternativa
+        // return {
+        //     assunto:assunto,
+        //     subAssunto: subAssunto,
+        //     ano: ano,
+        //     vestibular: vestibularCorrigido,
+        //     enunciadoCorrigido: enunciadoCorrigido,
+        //     resposta: respostaCorrigida,
+        //     alternativas: JSON.stringify([a, b, c, d, e]),
+        //     tipo: tipo
+        // }
+
+        alternativas = JSON.stringify([a, b, c, d, e])
+
+    }
+    else{
+        // console.log('assunto:'+assunto);
+        // console.log('subAssunto:'+subAssunto);
+        // console.log('ano:' + ano);
+        // console.log('vestibular:'+vestibularCorrigido);
+        // console.log('q:' + enunciadoCorrigido) 
+        // console.log('r:' + respostaCorrigida)
+        tipo='dissertativa';
+        // TODO aqui a questão não se enquadrou na captura de alternativa
+        // return {
+            // assunto: assunto,
+            // subAssunto: subAssunto,
+            // ano: ano,
+            // vestibular: vestibularCorrigido,
+            // enunciadoCorrigido: enunciadoCorrigido,
+            // resposta: respostaCorrigida,
+            // alternativas: "",
+            // tipo: tipo
+        // }
+
+        alternativas = ""
+    }
+        
+//}
+
+
+
+////////////////////////////////////////////////////////////////
 
                 ///---Criando uma nova linha no banco `questoes` na tabela `quimica`
                 Quimica.create({
                     id: id,
-                    vestibular: vestibular,
-                    questaoDe: questaoDe,
-                    subGrupo: subGrupo,
                     enunciado: enunciado,
-                    resposta: resposta,
                     imagens: imagensJSON,
                     nImagens: nImagens,        
                     classificada: classificada,
-                    temSubGrupo: temSubGrupo 
+                    temSubAssunto: temSubAssunto,
+                    assunto: assunto,
+                    subAssunto: subAssunto,
+                    ano: ano,
+                    vestibular: vestibularCorrigido,
+                    enunciadoCorrigido: enunciadoCorrigido,
+                    resposta: respostaCorrigida,
+                    alternativas: alternativas,
+                    tipo: tipo
                 })
-
-
-                // console.log("enunciado e resposta: " + enunciadoEResposta)
-                // console.log("--------------------------")
-                //console.log('peguei: ', i)
             }
         } catch (error) {
-            Quimica.create({
-                id: 1000000*i,
-                vestibular: `erro: ${error.response.status}, ${error.response.statusText}`,
-                questaoDe: `erro: ${error.response.status}, ${error.response.statusText}`,
-                subGrupo: `erro: ${error.response.status}, ${error.response.statusText}`,
-                enunciado: `erro: ${error.response.status}, ${error.response.statusText}`,
-                resposta: `erro: ${error.response.status}, ${error.response.statusText}`,
-                imagens: `erro: ${error.response.status}, ${error.response.statusText}`,
-                nImagens: 0,        
-                classificada: 0,
-                temSubGrupo: 0 
-            })
-
             console.error("- deu erro na pagina: ", i, " | erro: ", error.response.status, error.response.statusText)
             errorArray.push(i)
         }

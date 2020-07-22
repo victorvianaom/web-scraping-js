@@ -28,7 +28,7 @@ corrige = (enunciado,resposta,vestibular,assunto,subassunto)=>{
     
     resposta = resposta.trim();
     dimResposta = resposta.length;
-    if(dimResposta<=16){
+    if(dimResposta>=16){
         isAlternativa = false;
         respostaCorrigida = resposta;
         enunciadoCorrigido = enunciado;       

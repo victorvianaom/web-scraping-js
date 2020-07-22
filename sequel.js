@@ -25,13 +25,19 @@ const Quimica = sequelize.define('quimica', {
     vestibular: {
         type: Sequelize.STRING
     },
-    questaoDe: {
+    assunto: {
         type: Sequelize.STRING
     },
-    subGrupo: {
+    subAssunto: {
         type: Sequelize.STRING
     },
     enunciado: {
+        type: Sequelize.TEXT
+    },
+    enunciadoCorrigido: {
+        type: Sequelize.TEXT
+    },
+    alternativas: {
         type: Sequelize.TEXT
     },
     resposta: {
@@ -46,7 +52,7 @@ const Quimica = sequelize.define('quimica', {
     classificada: {
         type: Sequelize.INTEGER
     },
-    temSubGrupo: {
+    temSubAssunto: {
         type: Sequelize.INTEGER
     },
 },
@@ -55,4 +61,4 @@ const Quimica = sequelize.define('quimica', {
 })
 
 ////syncronize o meu sequilize model com o MySQL
-///////////Quimica.sync({/*force: true*/}) // force: true will drop the table if it already exists
+Quimica.sync({force: true}) // force: true will drop the table if it already exists
