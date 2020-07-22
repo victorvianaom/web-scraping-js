@@ -1,7 +1,3 @@
-MATERIA = 'ingles'
-NUM_PAGINAS = 581
-
-
 // const http = require('http')
 // const PORT = 3000
 
@@ -19,13 +15,10 @@ sequelize.authenticate().then(function() {
 })
 
 /// creating the Quimica Table Model
-const Tabela = sequelize.define(MATERIA, {
-    id_questao: {
+const Fisica = sequelize.define('fisica', {
+    id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
-    },
-    pagina: {
-        type: Sequelize.INTEGER
     },
     ano: {
         type: Sequelize.INTEGER
@@ -207,17 +200,15 @@ const Tabela = sequelize.define(MATERIA, {
 
 
 ////////////////////////////////////////////////////////////////
-const sleep = (delay)=> new Promise ((resolve)=>setTimeout(resolve,delay));
+
 
 // this way of working with axios is the recomended, because the promise way is still in level three of formal acceptance
 const axios = require('axios')
 //const { get } = require("request")
 async function getQuestions() {
     var errorArray = []
-    let i = 1
-    while (i <= NUM_PAGINAS) {
-        await sleep(1000);
-        url = `http://professor.bio.br/${MATERIA}/lista.all.asp?curpage=${i}`
+    for (var i = 1; i <= 613; i++) {
+        url = `http://professor.bio.br/quimica/lista.all.asp?curpage=${i}`
         try {
             const response = await axios.request( /// changed from `get` to `request`
                 ////`http://professor.bio.br/quimica/lista.all.asp?curpage=${i}`
@@ -233,11 +224,9 @@ async function getQuestions() {
             ROOT_SELECTOR_QUIMICA = "body > table > tbody > tr > td:nth-child(1) > table > tbody > tr:nth-child(8) > td > table > tbody > "
 
             for (var n = 1; n <= 15; n++) {
-                await sleep(100);
                 selectorQuestion = ROOT_SELECTOR_QUIMICA + `tr:nth-child(${n + 1}) > `
 
-                id_questao = ( 15*(i-1) + n )
-                pagina = i
+                id = 1000000*i + ( 15*(i-1) + n )
                 vestibular = $(selectorQuestion + "td:nth-child(1) > font:nth-child(1) > a").text()
                 assunto = $(selectorQuestion + "td:nth-child(1) > font:nth-child(1)").text()
                 subAssunto = $(selectorQuestion + "td:nth-child(1) > font:nth-child(3)").text()
@@ -288,11 +277,11 @@ async function getQuestions() {
     hifenIndex = vestibular.lastIndexOf('-');
     if(hifenIndex!=-1){
         vestibularCorrigido = vestibular.substring(0,hifenIndex);
-        ano = vestibular.substring(1+hifenIndex);
+        ano= vestibular.substring(1+hifenIndex);
     }
-    else {
-        vestibularCorrigido = vestibular.match(/(.*)(\d\d\d\d)/) === null ? vestibular : vestibular.match(/(.*)(\d\d\d\d)/)[1] ;
-        ano = vestibular.match(/(.*)(\d\d\d\d)/) === null ? "" : vestibular.match(/(.*)(\d\d\d\d)/)[2] ;
+    else{
+        vestibularCorrigido="";
+        ano="";
     }
     
     resposta = resposta.trim();
@@ -413,9 +402,8 @@ async function getQuestions() {
 ////////////////////////////////////////////////////////////////
 
                 ///---Criando uma nova linha no banco `questoes` na tabela `quimica`
-                Tabela.create({
-                    id_questao: id_questao,
-                    pagina: pagina,
+                Fisica.create({
+                    id: id,
                     enunciado: enunciado,
                     imagens: imagensJSON,
                     nImagens: nImagens,        
@@ -430,11 +418,7 @@ async function getQuestions() {
                     alternativas: alternativas,
                     tipo: tipo
                 })
-
             }
-
-            i++
-
         } catch (error) {
             // Quimica.create({
             //     id: id,
