@@ -1,5 +1,6 @@
-MATERIA = 'ingles'
-NUM_PAGINAS = 581
+MATERIA = 'quimica'
+NUM_PAGINAS = 613
+TABELA = 'quimica2'
 
 
 // const http = require('http')
@@ -19,7 +20,7 @@ sequelize.authenticate().then(function() {
 })
 
 /// creating the Quimica Table Model
-const Tabela = sequelize.define(MATERIA, {
+const Tabela = sequelize.define(TABELA, {
     id_questao: {
         type: Sequelize.INTEGER,
         primaryKey: true,
@@ -28,7 +29,7 @@ const Tabela = sequelize.define(MATERIA, {
         type: Sequelize.INTEGER
     },
     ano: {
-        type: Sequelize.INTEGER
+        type: Sequelize.STRING
     },
     tipo: {
         type: Sequelize.STRING
