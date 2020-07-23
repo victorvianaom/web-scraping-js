@@ -11,7 +11,7 @@ sequelize.authenticate().then(function() {
 })
 
 // creating models, each model corresponds to a table...
-const Tabela = sequelize.define('geografia', {
+const Tabela = sequelize.define('portugues2', {
     id_questao: {
         type: Sequelize.INTEGER,
         primaryKey: true,
