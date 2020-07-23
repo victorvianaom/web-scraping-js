@@ -1,6 +1,7 @@
-MATERIA = 'quimica'
-NUM_PAGINAS = 613
-TABELA = 'quimica2'
+MATERIA = 'geografia'
+PAGINA_INICIAL = 1
+NUM_PAGINAS = 612
+TABELA = 'geografia'
 
 
 // const http = require('http')
@@ -215,9 +216,10 @@ const axios = require('axios')
 //const { get } = require("request")
 async function getQuestions() {
     var errorArray = []
-    let i = 1
+    let i = PAGINA_INICIAL
     while (i <= NUM_PAGINAS) {
         await sleep(1000);
+        //url = `http://professor.bio.br/lista.all.asp?curpage=${i}`
         url = `http://professor.bio.br/${MATERIA}/lista.all.asp?curpage=${i}`
         try {
             const response = await axios.request( /// changed from `get` to `request`
@@ -231,11 +233,15 @@ async function getQuestions() {
             const cheerio = require('cheerio')
             const $ = cheerio.load(response.data.toString('latin1'))
             
+            ROOT_SELECTOR_GEOGRAFIA = "body > table > tbody > tr:nth-child(1) > td > table > tbody > tr:nth-child(7) > td:nth-child(1) > table > tbody > "
+            ROOT_SELECTOR_BIOLOGIA = "body > table > tbody > tr:nth-child(8) > td > table > tbody > "
             ROOT_SELECTOR_QUIMICA = "body > table > tbody > tr > td:nth-child(1) > table > tbody > tr:nth-child(8) > td > table > tbody > "
 
             for (var n = 1; n <= 15; n++) {
                 await sleep(100);
-                selectorQuestion = ROOT_SELECTOR_QUIMICA + `tr:nth-child(${n + 1}) > `
+                //selectorQuestion = ROOT_SELECTOR_QUIMICA + `tr:nth-child(${n + 1}) > `
+                //selectorQuestion = ROOT_SELECTOR_BIOLOGIA + `tr:nth-child(${n + 1}) > `
+                selectorQuestion = ROOT_SELECTOR_GEOGRAFIA + `tr:nth-child(${n + 1}) > `
 
                 id_questao = ( 15*(i-1) + n )
                 pagina = i
@@ -287,7 +293,7 @@ async function getQuestions() {
     let dimResposta
     let tipo;
     hifenIndex = vestibular.lastIndexOf('-');
-    if(hifenIndex!=-1){
+    if(hifenIndex!=-1 && vestibular.match(/\d\d\d\d/) !== null){
         vestibularCorrigido = vestibular.substring(0,hifenIndex);
         ano = vestibular.substring(1+hifenIndex);
     }

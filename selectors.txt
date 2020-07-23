@@ -3,7 +3,12 @@
                      body > table > tbody > tr > td:nth-child(1) > table > tbody > tr:nth-child(8) > td > table > tbody > tr:nth-child(2) > td:nth-child(1) > font:nth-child(1) > a
                      				       bio: body > table > tbody > tr:nth-child(8) > td > table > tbody > tr:nth-child(2) > td:nth-child(1) > font:nth-child(1) > a
 						       bio: body > table > tbody > tr:nth-child(8) > td > table > tbody > tr:nth-child(2) > td:nth-child(1) > font:nth-child(1) > a
+   geo: body > table > tbody > tr:nth-child(1) > td > table > tbody > tr:nth-child(7) > td:nth-child(1) > table > tbody > tr:nth-child(2) > td:nth-child(1) > font:nth-child(1) > a
+	  
+          ROOT_QUIM: body > table > tbody > tr > td:nth-child(1) > table > tbody > tr:nth-child(8) > td > table > tbody > 
 	        fis: body > table > tbody > tr > td:nth-child(1) > table > tbody > tr:nth-child(8) > td > table > tbody > tr:nth-child(2) > td:nth-child(1) > font:nth-child(1) > a
+	       port: body > table > tbody > tr > td:nth-child(1) > table > tbody > tr:nth-child(8) > td > table > tbody > tr:nth-child(2) > td:nth-child(1) > font:nth-child(1) > a
+		     body > table > tbody > tr > td:nth-child(1) > table > tbody > tr:nth-child(8) > td > table > tbody > tr:nth-child(2) > td:nth-child(1) > font:nth-child(1) > a
 ---------questao de: body > table > tbody > tr > td:nth-child(1) > table > tbody > tr:nth-child(8) > td > table > tbody > tr:nth-child(2) > td:nth-child(1) > font:nth-child(1)
 ----------sub-grupo: body > table > tbody > tr > td:nth-child(1) > table > tbody > tr:nth-child(8) > td > table > tbody > tr:nth-child(2) > td:nth-child(1) > font:nth-child(3)
 pergunta e resposta: body > table > tbody > tr > td:nth-child(1) > table > tbody > tr:nth-child(8) > td > table > tbody > tr:nth-child(2) > td:nth-child(2) > font > font

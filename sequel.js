@@ -11,7 +11,7 @@ sequelize.authenticate().then(function() {
 })
 
 // creating models, each model corresponds to a table...
-const Tabela = sequelize.define('quimica2', {
+const Tabela = sequelize.define('geografia', {
     id_questao: {
         type: Sequelize.INTEGER,
         primaryKey: true,
@@ -64,4 +64,4 @@ const Tabela = sequelize.define('quimica2', {
 })
 
 //syncronize o meu sequilize model com o MySQL
-//Tabela.sync(/*{force: true}*/) // force: true will drop the table if it already exists
+Tabela.sync(/*{force: true}*/) // force: true will drop the table if it already exists
